@@ -1,0 +1,18 @@
+{
+    "name": "geniussystems-np/cloudevents",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jerry",
+            "email": "lna.amatya@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "GeniusSystems\\CloudEvent\\": "src/CloudEvent/"
+        }
+    },
+    "require": {}
+}
