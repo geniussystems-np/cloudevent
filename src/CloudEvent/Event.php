@@ -7,20 +7,33 @@ namespace GeniusSystems\CloudEvent;
  * Date: 10/7/20
  * Time: 16:19
  */
-class Event
+class Event implements \JsonSerializable
 {
-    protected $specversion, $type, $source, $date, $datacontenttype, $data;
+    protected $spec;
 
-    function __construct(array $data)
+    function __construct(array $spec)
     {
-
-        $this->specversion = isset($data['specversion']) ? $data['specversion'] : null;
-        $this->type = isset($data['type']) ? $data['type'] : null;
-        $this->source = isset($data['source']) ? $data['source'] : null;
-        $this->date = date('Y-m-d H:i:s');
-        $this->datacontenttype = isset($data['datacontenttype']) ? $data['datacontenttype'] : null;
-        $this->data = isset($data['data']) ? $data['data'] : null;
+      $this->spec = $spec;
     }
 
+    public function jsonSerialize()
+    {
+      return array_filter([
+        "id"              => $this->spec['id'] ?? uniqid() ?? null,
+        "source"          => $this->spec['source'] ?? $_SERVER['REQUEST_URI'],
+        "specversion"     => "1.0",
+        "type"            => $this->spec['type'] ?? $this->defaultType(),
+        "time"            => $this->spec['date'] ?? (new \DateTime)->format(\DateTime::RFC3339),
+        "datacontenttype" => $this->spec['datacontenttype'] ?? null,
+        "subject"         => $this->spec['subject'] ?? null,
+        "data"            => $this->spec['data'] ?? null,
+      ], function($value) {
+        return $value !== null;
+      });
+    }
 
+    protected function defaultType()
+    {
+      return implode("." ,array_reverse(explode(".", $_SERVER['SERVER_NAME']))) . ".genericevent";
+    }
 }
