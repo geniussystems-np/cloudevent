@@ -19,7 +19,7 @@ class Event implements \JsonSerializable
     public function jsonSerialize()
     {
       return array_filter([
-        "id"              => $this->spec['id'] ?? uniqid() ?? null,
+        "id"              => $this->spec['id'] ?? uniqid(),
         "source"          => $this->spec['source'] ?? $_SERVER['REQUEST_URI'],
         "specversion"     => "1.0",
         "type"            => $this->spec['type'] ?? $this->defaultType(),
