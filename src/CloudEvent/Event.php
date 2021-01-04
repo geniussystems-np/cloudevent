@@ -20,7 +20,7 @@ class Event implements \JsonSerializable
     {
       return array_filter([
         "id"              => $this->spec['id'] ?? uniqid(),
-        "source"          => $this->spec['source'] ?? $_SERVER['REQUEST_URI'],
+        "source"          => $this->spec['source'] ?? $_SERVER['REQUEST_URI'] ?? gethostname(),
         "specversion"     => "1.0",
         "type"            => $this->spec['type'] ?? $this->defaultType(),
         "time"            => $this->spec['date'] ?? (new \DateTime)->format(\DateTime::RFC3339),
